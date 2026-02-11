@@ -45,24 +45,27 @@ setInterval(update,1000);
 update();
 
 function calc(){
-  let now=new Date();
-  let t=document.getElementById("wake").value;
-  if(!t){alert("Pick a wake time!");return;}
+  let now = new Date();
+  let t = document.getElementById("wake").value;
+  if(!t){ alert("Pick a wake time!"); return; }
 
-  let [h,m]=t.split(":");
-  let w=new Date();
-  w.setHours(h,m,0,0);
-  if(w<now) w.setDate(w.getDate()+1);
+  let [h, m] = t.split(":");
+  let w = new Date();
+  w.setHours(h, m, 0, 0);
+  if(w < now) w.setDate(w.getDate() + 1);
 
-  let mins=(w-now)/60000;
-  let hours=(mins/60).toFixed(2);
-  let cycles=Math.round(mins/90);
-  let best=new Date(now.getTime()+cycles*90*60000);
+  let mins = (w - now) / 60000;
+  let hours = (mins / 60).toFixed(2);
+
+  // ROUND DOWN to earlier sleep cycle
+  let cycles = Math.floor(mins / 90);
+
+  let best = new Date(now.getTime() + cycles * 90 * 60000);
 
   document.getElementById("out").innerHTML =
-    "Total sleep: "+hours+" hours<br>"+
-    "Cycles: "+cycles+"<br>"+
-    "Best wake time: "+best.toLocaleTimeString();
+    "Total sleep: " + hours + " hours<br>" +
+    "Cycles: " + cycles + "<br>" +
+    "Best wake time: " + best.toLocaleTimeString();
 }
 </script>
 
