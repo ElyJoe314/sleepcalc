@@ -1,36 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sleep Cycle Calculator</title>
-  <style>
-    body {
-      background:#0f172a;
-      color:white;
-      font-family:Arial;
-      text-align:center;
-      padding-top:50px;
-    }
-    .box {
-      background:#111827;
-      padding:20px;
-      border-radius:12px;
-      display:inline-block;
-    }
-    input,button {
-      padding:10px;
-      font-size:16px;
-      margin:5px;
-    }
-  </style>
+<title>Sleep Cycle Calculator</title>
+
+<style>
+body {
+  background: radial-gradient(circle at top, #1f2937, #000);
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Arial, sans-serif;
+  text-align: center;
+  padding-top: 60px;
+}
+
+/* Apple-style glass card */
+.box {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(20px);
+  border-radius: 22px;
+  padding: 30px 35px;
+  display: inline-block;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #9ca3af;
+  font-size: 15px;
+}
+
+input, button {
+  padding: 12px 16px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  margin: 8px 0;
+}
+
+/* Apple input */
+input {
+  background: rgba(255,255,255,0.08);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Apple button */
+button {
+  background: #0a84ff;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #409cff;
+}
+
+#out {
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+</style>
 </head>
+
 <body>
 
 <div class="box">
   <h1>Sleep Cycle Calculator</h1>
   <p>Current time: <span id="now"></span></p>
 
-  <label>Wake-up time:</label>
-  <input type="time" id="wake">
+  <label>Wake-up time</label><br>
+  <input type="time" id="wake"><br>
   <button onclick="calc()">Calculate</button>
 
   <p id="out"></p>
@@ -53,18 +102,12 @@ function calc() {
   let wake = new Date();
   wake.setHours(h, m, 0, 0);
 
-  // If wake time already passed today, assume tomorrow
   if (wake < now) wake.setDate(wake.getDate() + 1);
 
-  // Time difference in minutes
   let mins = (wake - now) / 60000;
-
-  // Number of 90-min cycles BEFORE wake time
   let cycles = Math.floor(mins / 90);
 
-  // Go BACK from wake time
   let best = new Date(wake.getTime() - cycles * 90 * 60000);
-
   let sleepHours = (cycles * 1.5).toFixed(2);
 
   document.getElementById("out").innerHTML =
