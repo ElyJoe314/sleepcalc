@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sleep Cycle Calculator</title>
+  <style>
+    body {
+      background:#0f172a;
+      color:white;
+      font-family:Arial;
+      text-align:center;
+      padding-top:50px;
+    }
+    .box {
+      background:#111827;
+      padding:20px;
+      border-radius:12px;
+      display:inline-block;
+    }
+    input,button {
+      padding:10px;
+      font-size:16px;
+      margin:5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h1>Sleep Cycle Calculator</h1>
+  <p>Current time: <span id="now"></span></p>
+
+  <label>Wake-up time:</label>
+  <input type="time" id="wake">
+  <button onclick="calc()">Calculate</button>
+
+  <p id="out"></p>
+</div>
+
+<script>
+function update(){
+  let n=new Date();
+  document.getElementById("now").innerText=n.toLocaleTimeString();
+}
+setInterval(update,1000);
+update();
+
+function calc(){
+  let now=new Date();
+  let t=document.getElementById("wake").value;
+  if(!t){alert("Pick a wake time!");return;}
+
+  let [h,m]=t.split(":");
+  let w=new Date();
+  w.setHours(h,m,0,0);
+  if(w<now) w.setDate(w.getDate()+1);
+
+  let mins=(w-now)/60000;
+  let hours=(mins/60).toFixed(2);
+  let cycles=Math.round(mins/90);
+  let best=new Date(now.getTime()+cycles*90*60000);
+
+  document.getElementById("out").innerHTML =
+    "Total sleep: "+hours+" hours<br>"+
+    "Cycles: "+cycles+"<br>"+
+    "Best wake time: "+best.toLocaleTimeString();
+}
+</script>
+
+</body>
+</html>
