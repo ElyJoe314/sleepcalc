@@ -50,27 +50,27 @@ function calc() {
   if (!t) { alert("Pick a wake time!"); return; }
 
   let [h, m] = t.split(":");
-  let w = new Date();
-  w.setHours(h, m, 0, 0);
+  let wake = new Date();
+  wake.setHours(h, m, 0, 0);
 
-  // If the wake time is earlier than now, assume it's tomorrow
-  if (w < now) w.setDate(w.getDate() + 1);
+  // If wake time already passed today, assume tomorrow
+  if (wake < now) wake.setDate(wake.getDate() + 1);
 
-  let mins = (w - now) / 60000;
+  // Time difference in minutes
+  let mins = (wake - now) / 60000;
 
-  // Calculate full 90-min cycles that fit BEFORE wake time
+  // Number of 90-min cycles BEFORE wake time
   let cycles = Math.floor(mins / 90);
 
-  // Best wake time is now + full cycles
-  let best = new Date(now.getTime() + cycles * 90 * 60000);
+  // Go BACK from wake time
+  let best = new Date(wake.getTime() - cycles * 90 * 60000);
 
-  // Total sleep time in hours
-  let sleepHours = ((best - now) / 60000 / 60).toFixed(2);
+  let sleepHours = (cycles * 1.5).toFixed(2);
 
   document.getElementById("out").innerHTML =
     "Total sleep: " + sleepHours + " hours<br>" +
     "Cycles: " + cycles + "<br>" +
-    "Best wake time (before target): " + best.toLocaleTimeString();
+    "Go to bed at: " + best.toLocaleTimeString();
 }
 </script>
 
